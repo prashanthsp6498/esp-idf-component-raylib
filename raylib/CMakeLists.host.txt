@@ -18,6 +18,7 @@ cmake_policy(SET CMP0054 NEW)
 # See https://cmake.org/cmake/help/latest/policy/CMP0063.html
 cmake_policy(SET CMP0063 NEW)
 
+
 # Directory for easier includes
 # Anywhere you see include(...) you can check <root>/cmake for that file
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/raylib/cmake)
@@ -36,6 +37,10 @@ endif()
 
 # Main sources directory (the second parameter sets the output directory name to raylib)
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/raylib/src raylib)
+target_include_directories(raylib PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/raygui/src>
+)
+
 
 # Uninstall target, only create when building raylib by itself
 # Avoid conflicting target names when using raylib with other libraries
@@ -48,6 +53,20 @@ if(NOT TARGET uninstall AND PROJECT_IS_TOP_LEVEL)
   add_custom_target(uninstall
     COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
 endif()
+
+# raygui
+#add_library(raygui STATIC)
+#set(RAYGUI_SRC ${CMAKE_CURRENT_LIST_DIR}/raygui/src)
+#file(GLOB sources ${CMAKE_CURRENT_LIST_DIR}/raygui/src/*.h)
+#target_sources(raygui PUBLIC ${CMAKE_CURRENT_LIST_DIR}/raygui/src/raygui.h)
+#target_include_directories(raygui PUBLIC ${CMAKE_CURRENT_LIST_DIR}/raylib/src)
+#set(RAYGUI_IMPLEMENTATION ON)
+#set(RAYGUI_HEADERS ${sources})
+#install(FILES
+#    ${RAYGUI_HEADERS} DESTINATION include
+#)
+#target_link_libraries(raygui PUBLIC raylib)
+#target_include_directories(raygui INTERFACE ${RAYGUI_SRC})
 
 
 enable_testing()
