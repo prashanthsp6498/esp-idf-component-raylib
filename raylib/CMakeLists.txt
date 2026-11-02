@@ -14,6 +14,7 @@ idf_component_register(
         "include"                # Our wrapper includes (stubs) - custom config.h here takes precedence
         "raylib/src"
         "raylib/src/external"
+        "raygui/src"
     PRIV_REQUIRES
         esp_lcd
 )
